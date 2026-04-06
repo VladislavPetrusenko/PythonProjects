@@ -32,15 +32,11 @@ def get_cloud_files_info(cloud_storage) -> Set[str]:
     :param cloud_storage: объект класса CloudStorage
     :return: (set) множество имён
     """
-    try:
-        file_list = cloud_storage.get_info() # вызов метода, который возвращает информацию о файлах
-        if not isinstance(file_list, list): # если по какой-то причине вернулось не список
-            logger.error("Метод get_info вернул некорректный формат данных") # запись ошибки
-            return set() # возвращаем пустое множество
-        return set(file_list) # преобразуем список в множество для быстрого сравнения
-    except Exception as e: # перехват любых неожиданных ошибок
-        logger.error(f"Ошибка при получении списка файлов из облака: {e}")
-        return set() # возвращаем пустое множество, чтобы синхронизация могла продолжиться
+    file_list = cloud_storage.get_info() # вызов метода, который возвращает информацию о файлах
+    if not isinstance(file_list, list): # если по какой-то причине вернулось не список
+        logger.error("Метод get_info вернул некорректный формат данных") # запись ошибки
+        return set() # возвращаем пустое множество
+    return set(file_list) # преобразуем список в множество для быстрого сравнения
 
 def compare_files(current_local: Dict[str, float], previous_local: Dict[str, float], cloud_files: Set[str]) -> Tuple[Set[str], Set[str]]:
     """
@@ -60,10 +56,12 @@ def compare_files(current_local: Dict[str, float], previous_local: Dict[str, flo
     for filename, current_mtime in current_local.items(): # цикл по текущим локальным файлам
         if filename not in cloud_files: # если файла нет в облаке - он новый
             to_upload.add(filename) # добавляем в загрузку
-        elif filename in previous_local: # если файл был в предыдущем состоянии
-            previous_mtime = previous_local.get(filename) # получаем предыдущее время
-        if current_mtime != previous_mtime: # если время изменилось
-            to_upload.add(filename) # добавляем в загрузку
+            continue
+
+        prev_mtime = previous_local.get(filename) # файл есть и локально, и в облаке
+        # Если файл отсутствовал в предыдущем состоянии или изменился -> загрузить (перезаписать)
+        if prev_mtime is None or current_mtime != prev_mtime:
+            to_upload.add(filename)
     return to_upload, to_delete # возвращаем два множества
 
 def sync_once(local_folder: str, cloud_storage, previous_local_state: dict) -> dict:
@@ -76,11 +74,11 @@ def sync_once(local_folder: str, cloud_storage, previous_local_state: dict) -> d
     :param previous_local_state: словарь предыдущего состояния (может быть пустым при первом запуске)
     :return: новое состояние локальной папки (словарь mtime) для следующей итерации
     """
+    if not os.path.isdir(local_folder):
+        logger.error(f"Синхронизация прервана: локальная папка {local_folder} недоступна")
+        return previous_local_state
+    
     current_local = get_local_files_info(local_folder) # получить текущее состояние локальной папки
-    if not current_local and not os.path.exists(local_folder): # если папка не существует или недоступна
-        logger.error(f"Синхронизация прервана: локальная папка {local_folder} недоступна") # логируем
-        return previous_local_state # возвращаем неизменённое предыдущее состояние
-
     cloud_files = get_cloud_files_info(cloud_storage) # получить список файлов в облаке
     to_upload, to_delete = compare_files(current_local, previous_local_state, cloud_files) # cравнить и определить действия
 

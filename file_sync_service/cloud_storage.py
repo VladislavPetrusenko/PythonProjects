@@ -11,14 +11,11 @@ class CloudStorage:
         :param token (str):  токен от Яндекс.Диска для доступа к API
         :param cloud_folder (str): имя папки в облаке
         """
-        try:
-            self.token = token # сохраняем токен как атрибут
-            self.cloud_folder = cloud_folder # сохраняем облачную папку как атрибут
-            self.base_url = "https://cloud-api.yandex.net/v1/disk" # базовый URL для API Яндекс.Диска
-            self.headers = {"Authorization": f"OAuth {self.token}"} # заголовок авторизации для всех запросов
-            logger.info(f"Инициализировано облачное хранилище. Папка: {cloud_folder}") # запись в лог успешной инициализации
-        except ConnectionError:
-            raise ConnectionError("Не удалось подключиться к облаку. Проверьте токен.")
+        self.token = token # сохраняем токен как атрибут
+        self.cloud_folder = cloud_folder # сохраняем облачную папку как атрибут
+        self.base_url = "https://cloud-api.yandex.net/v1/disk" # базовый URL для API Яндекс.Диска
+        self.headers = {"Authorization": f"OAuth {self.token}"} # заголовок авторизации для всех запросов
+        logger.info(f"Инициализировано облачное хранилище. Папка: {cloud_folder}") # запись в лог успешной инициализации
 
     def _request(self, method: str, url: str, params = None, json = None, files = None) -> requests.Response | None:
         """
