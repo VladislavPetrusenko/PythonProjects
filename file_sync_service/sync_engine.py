@@ -83,8 +83,8 @@ def sync_once(local_folder: str, cloud_storage, previous_local_state: dict) -> d
     to_upload, to_delete = compare_files(current_local, previous_local_state, cloud_files) # cравнить и определить действия
 
     for filename in to_delete: # цикл по файлам, которые нужно удалить
-        result = cloud_storage.delete(filename) # вызов метода удаления
-        if not result: # если удаление не удалось (метод вернул False)
+        logger.info(f"Удаление из облака: {filename}")
+        if not cloud_storage.delete(filename):
             logger.error(f"Не удалось удалить {filename} из облака")
 
     for filename in to_upload: # цикл по файлам для загрузки
@@ -92,15 +92,14 @@ def sync_once(local_folder: str, cloud_storage, previous_local_state: dict) -> d
         if not os.path.exists(local_path): # если файл исчез
             logger.warning(f"Файл {filename} исчез перед загрузкой") # предупреждение (можно INFO)
             continue
-
-        result = cloud_storage.reload(local_path) # для загрузки и перезаписи используем метод reload
-        if not result: # если ошибка
+        logger.info(f"Загрузка в облако: {filename}")
+        if not cloud_storage.reload(local_path):
             logger.error(f"Ошибка при загрузке {filename}") # дополнительное логирование
 
     if to_upload:
-        logger.info(f"Загружено файлов: {len(to_upload)}")
+        logger.info(f"Загружено файлов: {len(to_upload)} -> {', '.join(to_upload)}")
     if to_delete:
-        logger.info(f"Удалено из облака файлов: {len(to_delete)}")
+        logger.info(f"Удалено из облака файлов: {len(to_delete)} -> {', '.join(to_delete)}")
 
     return current_local # возвращаем словарь с актуальными mtime
 
@@ -119,10 +118,12 @@ def initial_sync(local_folder: str, cloud_storage) -> dict:
     files_to_delete = cloud_files - set(current_local.keys()) # определяем файлы, которые нужно удалить из облака (есть в облаке, но нет локально)
 
     for filename in files_to_delete: # цикл удаления
+        logger.info(f"Удаление лишнего облачного файла: {filename}")
         cloud_storage.delete(filename) # вызов delete, логирование внутри
 
     for filename in current_local.keys(): # цикл по локальным файлам
         local_path = os.path.join(local_folder, filename) # полный путь
+        logger.info(f"Загрузка (полная синхронизация): {filename}")
         cloud_storage.reload(local_path) # загружаем/перезаписываем
 
     logger.info("Полная синхронизация завершена")
