@@ -1,6 +1,6 @@
-import requests
 import logging
 import os
+import requests
 
 logger = logging.getLogger("sync_logger") # получаем уже настроенный логгер
 
