@@ -1,4 +1,4 @@
-# ✅ Todo List — Django + SQLite + Docker
+# ✅ Todo List — Django + SQLite
 
 Минималистичное веб‑приложение для управления задачами.  
 Без JavaScript, с красивым интерфейсом на чистом HTML + CSS.  
