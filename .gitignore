@@ -3,5 +3,10 @@
 /workspace.xml
 # Editor-based HTTP Client requests
 /httpRequests/
-/.idea
 .venv
+.env
+.vscode
+__pycache__/
+migrations
+db.sqlite3
+.dockerignore
