@@ -1,0 +1,321 @@
+/* ============================================
+   Мини-блог – авторский стиль
+   ============================================ */
+
+/* ----- Google Fonts ----- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+/* ----- Базовые переменные и сброс ----- */
+:root {
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --color-bg: #f9f7f4;
+    --color-card: #ffffff;
+    --color-accent: #5b7b6e;
+    --color-accent-hover: #466357;
+    --color-danger: #b3544c;
+    --color-danger-hover: #933d36;
+    --color-text: #3d3d3d;
+    --color-muted: #7d7d7d;
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.04), 0 4px 10px rgba(0, 0, 0, 0.05);
+    --shadow-hover: 0 18px 35px rgba(0, 0, 0, 0.07), 0 6px 15px rgba(0, 0, 0, 0.05);
+    --radius: 16px;
+    --radius-btn: 12px;
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-top: 5rem;
+    /* отступ под фиксированное меню */
+}
+
+/* ----- Типографика ----- */
+h1,
+h2,
+h3,
+.navbar-brand {
+    font-family: var(--font-heading);
+    font-weight: 600;
+}
+
+a {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color var(--transition);
+}
+
+a:hover {
+    color: var(--color-accent-hover);
+}
+
+/* ----- Навигация ----- */
+.navbar {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.navbar-brand {
+    font-size: 1.7rem;
+    color: var(--color-accent) !important;
+    letter-spacing: -0.5px;
+}
+
+.navbar-nav .nav-link {
+    color: var(--color-text) !important;
+    font-weight: 500;
+    border-radius: var(--radius-btn);
+    padding: 0.5rem 1.2rem;
+    transition: background var(--transition), color var(--transition);
+}
+
+.navbar-nav .nav-link:hover {
+    background: rgba(91, 123, 110, 0.08);
+    color: var(--color-accent) !important;
+}
+
+.navbar .btn-outline-light {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    background: transparent;
+}
+
+.navbar .btn-outline-light:hover {
+    background: var(--color-accent);
+    color: #fff;
+}
+
+/* ----- Карточки постов ----- */
+.post-card {
+    background: var(--color-card);
+    border: none;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition);
+    overflow: hidden;
+}
+
+.post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+}
+
+.post-card .card-body {
+    padding: 2rem;
+}
+
+.post-card .card-title {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+}
+
+.post-card .card-text {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+}
+
+.post-card .btn-primary {
+    background: var(--color-accent);
+    border: none;
+    border-radius: var(--radius-btn);
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    transition: background var(--transition);
+}
+
+.post-card .btn-primary:hover {
+    background: var(--color-accent-hover);
+}
+
+/* ----- Детальный пост ----- */
+article h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.article-meta {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.article-meta .badge {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.35em 0.85em;
+    border-radius: 50px;
+    letter-spacing: 0.3px;
+}
+
+.badge-published {
+    background: #dff0e4;
+    color: #2e5a44;
+}
+
+.badge-draft {
+    background: #fdefdc;
+    color: #8a6236;
+}
+
+.content {
+    white-space: pre-line;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #4a4a4a;
+}
+
+/* ----- Кнопки действий ----- */
+.btn-action {
+    border-radius: var(--radius-btn);
+    padding: 0.55rem 1.8rem;
+    font-weight: 500;
+    transition: all var(--transition);
+}
+
+.btn-outline-primary {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+.btn-outline-primary:hover {
+    background: var(--color-accent);
+    color: white;
+}
+
+.btn-outline-danger {
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+}
+
+.btn-outline-danger:hover {
+    background: var(--color-danger);
+    color: white;
+}
+
+/* ----- Формы ----- */
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+    color: var(--color-text);
+}
+
+input[type="text"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background: #fff;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(91, 123, 110, 0.15);
+}
+
+textarea {
+    min-height: 180px;
+    resize: vertical;
+}
+
+.btn-success {
+    background: var(--color-accent);
+    border: none;
+    border-radius: var(--radius-btn);
+    font-weight: 500;
+    padding: 0.6rem 2rem;
+}
+
+.btn-success:hover {
+    background: var(--color-accent-hover);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid #ccc;
+    color: var(--color-text);
+    border-radius: var(--radius-btn);
+    padding: 0.6rem 2rem;
+    font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background: #eee;
+}
+
+/* ----- Подтверждение удаления ----- */
+.delete-card {
+    max-width: 550px;
+    margin: 3rem auto;
+    background: var(--color-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 3rem 2rem;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.delete-card h2 {
+    color: var(--color-danger);
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
+}
+
+.delete-card p {
+    font-size: 1.1rem;
+    color: var(--color-muted);
+    margin-bottom: 2rem;
+}
+
+.delete-card .btn-danger {
+    background: var(--color-danger);
+    border: none;
+    border-radius: var(--radius-btn);
+    padding: 0.7rem 2.2rem;
+    font-weight: 500;
+}
+
+.delete-card .btn-danger:hover {
+    background: var(--color-danger-hover);
+}
+
+/* ----- Адаптивность (без JavaScript) ----- */
+@media (max-width: 768px) {
+    body {
+        padding-top: 4rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.4rem;
+    }
+
+    article h1 {
+        font-size: 2rem;
+    }
+}
