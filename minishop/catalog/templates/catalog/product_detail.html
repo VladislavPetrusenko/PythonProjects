@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.name }} — Детали товара</title>
+    <link rel="stylesheet" href="{% static 'catalog/css/styles.css' %}">
+</head>
+<body>
+    <h1>{{ product.name }}</h1>
+    <p><strong>Категория:</strong> {{ product.category.name }}</p>
+    <p><strong>Цена:</strong> {{ product.price }} руб.</p>
+    <div>
+        <strong>Описание:</strong>
+        <p>{{ product.description|linebreaks }}</p>
+    </div>
+    <p><a href="{% url 'product_list' %}">← Назад к каталогу</a></p>
+</body>
+</html>

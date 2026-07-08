@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог товаров</title>
+    <link rel="stylesheet" href="{% static 'catalog/css/styles.css' %}">
+</head>
+<body>
+    <h1>Каталог товаров</h1>
+    <!-- Блок фильтров и поиска -->
+    <form method="get" class="filter-form">
+        <label for="q">Поиск:</label>
+        <input type="text" name="q" id="q" value="{{ current_q }}" placeholder="Название товара">
+
+        <label for="category">Категория:</label>
+        <select name="category" id="category">
+            <option value="">Все</option>
+            {% for cat in categories %}
+                <option value="{{ cat.id }}" {% if current_category == cat.id|stringformat:"s" %}selected{% endif %}>
+                    {{ cat.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <label for="price_from">Цена от:</label>
+        <input type="number" step="0.01" name="price_from" id="price_from" value="{{ current_price_from }}" placeholder="0.00">
+        <label for="price_to">Цена до:</label>
+        <input type="number" step="0.01" name="price_to" id="price_to" value="{{ current_price_to }}" placeholder="0.00">
+        <button type="submit">Применить</button>
+        <a href="{% url 'product_list' %}">Сбросить</a>
+    </form>
+    <!-- Список товаров -->
+    {% if products %}
+        {% for product in products %}
+            <div class="product-item">
+                <h3><a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a></h3>
+                <p><strong>Категория:</strong> {{ product.category.name }}</p>
+                <p><strong>Цена:</strong> {{ product.price }} руб.</p>
+                <p>{{ product.description|truncatechars:100 }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty-message">Товаров не найдено</p>
+    {% endif %}
+</body>
+</html>
