@@ -30,8 +30,8 @@
 
 2. **Шаблон**:
 
-````
-[Settings]
+````[Settings]
+
 local_folder = C:/MyFolder          # путь к локальной папке
 cloud_folder = MyCloudBackup         # имя папки на Яндекс.Диске (будет создана автоматически)
 token = y0_AgAAAAA...                # ваш OAuth-токен

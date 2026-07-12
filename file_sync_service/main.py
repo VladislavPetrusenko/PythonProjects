@@ -48,7 +48,7 @@ def read_config(config_path: str) -> dict | None:
     }
 
 def main() -> int:
-    config_params = read_config("config.ini")
+    config_params = read_config(os.path.join(os.path.dirname(__file__), "config.ini"))
     if config_params is None:
         return 1
 
